@@ -1,0 +1,486 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seif Elden Hamdy | Back-End Developer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 250px;
+            max-height: 300px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .tab-btn {
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            color: #1d4ed8; /* text-blue-700 */
+            border-bottom-color: #1d4ed8; /* border-blue-700 */
+            font-weight: 600;
+        }
+        .skill-tag {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .skill-tag:hover {
+            background-color: #dbeafe; /* bg-blue-100 */
+            color: #1e40af; /* text-blue-800 */
+        }
+        .project-card {
+            transition: all 0.3s ease;
+            display: none; /* Hidden by default, shown by JS */
+        }
+        .project-card.visible {
+            display: block;
+        }
+        .filter-btn {
+            transition: all 0.2s ease;
+        }
+        .filter-btn.active {
+            background-color: #1d4ed8; /* bg-blue-700 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 leading-relaxed">
+
+    <div class="container mx-auto max-w-6xl p-4 md:p-8">
+
+        <!-- Header -->
+        <header class="mb-8">
+            <h1 class="text-4xl font-bold text-blue-700">SEIF ELDEN HAMDY</h1>
+            <h2 class="text-2xl font-semibold text-slate-600">BACK-END WEB DEVELOPER (PHP | LARAVEL)</h2>
+        </header>
+
+        <!-- Tab Navigation -->
+        <nav class="mb-8 border-b border-slate-300">
+            <div class="flex flex-wrap -mb-px space-x-4">
+                <button class="tab-btn text-lg py-3 px-1 border-b-2 border-transparent text-slate-600 hover:text-blue-700" id="btn-profile" data-tab="profile">Profile</button>
+                <button class="tab-btn text-lg py-3 px-1 border-b-2 border-transparent text-slate-600 hover:text-blue-700" id="btn-skills" data-tab="skills">Technical Skills</button>
+                <button class="tab-btn text-lg py-3 px-1 border-b-2 border-transparent text-slate-600 hover:text-blue-700" id="btn-projects" data-tab="projects">Projects</button>
+                <button class="tab-btn text-lg py-3 px-1 border-b-2 border-transparent text-slate-600 hover:text-blue-700" id="btn-education" data-tab="education">Education</button>
+            </div>
+        </nav>
+
+        <!-- Tab Content Area -->
+        <main>
+
+            <!-- Profile Section -->
+            <section id="tab-profile" class="tab-content">
+                <p class="text-lg text-slate-700 mb-8">
+                    Welcome to this interactive portfolio. This section provides a summary of my professional profile and contact information. Use the tabs above to explore my detailed skills, filter through my projects, and review my educational background.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="md:col-span-2 bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="text-2xl font-semibold text-blue-700 mb-4">Profile</h3>
+                        <p class="text-lg">
+                            A highly motivated Computer Engineering student (entering 3rd year) with a strong, practical focus on designing and building robust back-end web applications using **PHP** and the **Laravel** framework. Possessing deep understanding of **RESTful APIs, MySQL, and Object-Oriented Programming (OOP)**. Eager to leverage technical skills in a challenging team environment, particularly in areas requiring advanced system architecture and performance optimization.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="text-2xl font-semibold text-blue-700 mb-4">Contact</h3>
+                        <ul class="space-y-3">
+                            <li><strong>Phone:</strong> 01032484794</li>
+                            <li><strong>Email:</strong> <a href="mailto:seifeldenhamdy@gmail.com" class="text-blue-600 hover:underline">seifeldenhamdy@gmail.com</a></li>
+                            <li><strong>Location:</strong> El Mansoura, Egypt</li>
+                            <li><strong>GitHub:</strong> <a href="https://github.com/seifelden222" target="_blank" class="text-blue-600 hover:underline">github.com/seifelden222</a></li>
+                            <li><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/seifelden-hamdy" target="_blank" class="text-blue-600 hover:underline">linkedin.com/in/seifelden-hamdy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Skills Section -->
+            <section id="tab-skills" class="tab-content">
+                <p class="text-lg text-slate-700 mb-8">
+                    This section details my technical expertise. The chart provides a high-level overview of my skill distribution. Below, you can click on any specific skill tag (e.g., "Laravel 12", "REST API") to instantly filter the 'Projects' tab and see where that skill was applied.
+                </p>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 mb-8">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">Skill Category Overview</h3>
+                    <div class="chart-container">
+                        <canvas id="skillsChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">All Skills (Click to Filter Projects)</h3>
+                    
+                    <div class="mb-4">
+                        <h4 class="text-xl font-semibold text-slate-700 mb-2">Backend Core</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="PHP">PHP (OOP)</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="Laravel 10">Laravel 10</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="Laravel 12">Laravel 12</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="MySQL">MySQL</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="Eloquent ORM">Eloquent ORM</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h4 class="text-xl font-semibold text-slate-700 mb-2">Architectural Concepts</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="REST API">RESTful APIs</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="Service Layer">Service Layer</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="MVC">MVC</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="Design Patterns">Design Patterns</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="Data Integrity">Database Transactions</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h4 class="text-xl font-semibold text-slate-700 mb-2">Tools & Deployment</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="Git">Git</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="Composer">Composer</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="Docker">Docker</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="PHPUnit">PHPUnit</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="Queue Jobs">Queue Jobs</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="Caching">Caching</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="text-xl font-semibold text-slate-700 mb-2">Security & Utilities</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="Sanctum">Sanctum</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="Access Control">Policies/Gates</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="Soft Deletes">Soft Deletes</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="Guzzle HTTP">Guzzle HTTP</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h4 class="text-xl font-semibold text-slate-700 mb-2">Frontend Familiarity</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="JavaScript">JavaScript</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="HTML5">HTML5</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="CSS3">CSS3</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="Bootstrap">Bootstrap</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="TailwindCSS">TailwindCSS</span>
+                            <span class="skill-tag text-blue-800 bg-blue-100 rounded-full px-4 py-1 font-medium" data-skill="React.js">React.js</span>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Projects Section -->
+            <section id="tab-projects" class="tab-content">
+                <p class="text-lg text-slate-700 mb-8">
+                    Here are my selected projects. Use the filter buttons below to sort projects by a specific technology, or go to the 'Skills' tab to filter by clicking a skill tag. This allows you to see the practical application of my abilities.
+                </p>
+
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 mb-8">
+                    <h3 class="text-xl font-semibold text-blue-700 mb-3">Filter Projects by Technology</h3>
+                    <div id="project-filters" class="flex flex-wrap gap-2">
+                        <!-- Filter buttons will be dynamically inserted here -->
+                    </div>
+                </div>
+
+                <div id="project-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Project cards will be dynamically inserted here -->
+                </div>
+            </section>
+
+            <!-- Education Section -->
+            <section id="tab-education" class="tab-content">
+                <p class="text-lg text-slate-700 mb-8">
+                    This section contains my formal education and language proficiencies.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="text-2xl font-semibold text-blue-700 mb-4">Education</h3>
+                        <p class="text-lg"><strong>Faculty of Engineering - Mansoura University</strong></p>
+                        <p class="text-md text-slate-600">Computer Engineering Student</p>
+                        <p class="text-md text-slate-600">2023 - Present</p>
+                        <p class="text-md text-slate-600">Expected Graduation: [Please add expected year]</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="text-2xl font-semibold text-blue-700 mb-4">Languages</h3>
+                        <ul class="list-disc list-inside space-y-2 text-lg">
+                            <li>Arabic (Native)</li>
+                            <li>English (Fluent)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- DATA ---
+
+            const skillsChartData = {
+                labels: ['Backend Core', 'Architectural Concepts', 'Tools & Deployment', 'Security & Utilities', 'Frontend Familiarity'],
+                counts: [5, 5, 6, 4, 6]
+            };
+
+            const projectsData = [
+                {
+                    title: "Shop System (E-commerce Backend)",
+                    description: "Developed a production-ready e-commerce back-end using Laravel 12 and Filament Admin for comprehensive content management. Implemented full CRUD for products, brands, and categories, including secure image uploads and storage. Ensured data integrity through transactional order processing. Applied Role-Based Access Control using Policies and Gates. Secured contact flow with validation, rate-limiting, and queued email delivery.",
+                    tags: ["Laravel 12", "Filament Admin", "Data Integrity", "Access Control", "Database Queue", "Docker", "PHP", "MySQL"]
+                },
+                {
+                    title: "Smart URL Shortener API",
+                    description: "Engineered an intelligent link management platform using Laravel 10 with a comprehensive REST API. Implemented secure API authentication using Laravel Sanctum. Leveraged Queue Jobs for efficient background processing, Policies for access control, and Soft Deletes for data integrity. Features included link CRUD with expiration handling, real-time click analytics, and a webhook notification system.",
+                    tags: ["Laravel 10", "REST API", "Sanctum", "Queue Jobs", "Policies", "Soft Deletes", "PHP", "MySQL"]
+                },
+                {
+                    title: "EventFlow (Event Management Platform)",
+                    description: "Engineered a full-featured event management platform using Laravel 10. Implemented advanced features including auto-scoring (JSON-based) quizzes and real-time weather integration via OpenWeatherMap API (Guzzle HTTP). Utilized Polymorphic Relationships, audit logging, and Service-Layer Architecture. Integrated caching strategies for performance optimization.",
+                    tags: ["Laravel 10", "REST API", "Guzzle HTTP", "Polymorphic", "Service Layer", "Caching", "PHP", "MySQL", "TailwindCSS"]
+                },
+                {
+                    title: "SnapConvert (Image Processing & QR Tool)",
+                    description: "Built a compact PHP image-processing and QR tool utilizing Composer libraries (Intervention Image, Endroid QrCode). Implements configurable compression and format conversion (JPEG/PNG/GIF/WEBP/AVIF), and secure upload validation.",
+                    tags: ["PHP", "Composer", "GD", "Imagick"]
+                },
+                {
+                    title: "User Management System",
+                    description: "Successfully implemented a complete User Management System using raw PHP and MySQL with secure authentication and CRUD functionalities.",
+                    tags: ["PHP", "MySQL", "Authentication", "CRUD"]
+                },
+                {
+                    title: "Task Management Web App",
+                    description: "Built a Task Management Web App using Laravel, implementing RESTful APIs and Role-Based Access Control.",
+                    tags: ["Laravel", "REST API", "Access Control", "PHP", "MySQL"]
+                }
+            ];
+
+            // --- DOM ELEMENTS ---
+
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const projectList = document.getElementById('project-list');
+            const filterContainer = document.getElementById('project-filters');
+            const skillTags = document.querySelectorAll('.skill-tag');
+
+            // --- TAB NAVIGATION ---
+
+            function switchTab(tabId) {
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                });
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                document.getElementById('tab-' + tabId).classList.add('active');
+                document.getElementById('btn-' + tabId).classList.add('active');
+            }
+
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    switchTab(btn.dataset.tab);
+                });
+            });
+
+            // --- SKILLS CHART ---
+
+            function initSkillsChart() {
+                const ctx = document.getElementById('skillsChart');
+                if (!ctx) return;
+                
+                new Chart(ctx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: skillsChartData.labels,
+                        datasets: [{
+                            label: '# of Skills',
+                            data: skillsChartData.counts,
+                            backgroundColor: [
+                                'rgba(59, 130, 246, 0.7)',
+                                'rgba(37, 99, 235, 0.7)',
+                                'rgba(29, 78, 216, 0.7)',
+                                'rgba(30, 64, 175, 0.7)',
+                                'rgba(30, 58, 138, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgba(59, 130, 246, 1)',
+                                'rgba(37, 99, 235, 1)',
+                                'rgba(29, 78, 216, 1)',
+                                'rgba(30, 64, 175, 1)',
+                                'rgba(30, 58, 138, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return ` ${context.raw} skills`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                grid: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // --- PROJECT FILTERING & RENDERING ---
+
+            let allTags = new Set();
+            projectsData.forEach(p => p.tags.forEach(tag => allTags.add(tag)));
+
+            function renderFilters() {
+                filterContainer.innerHTML = '';
+                
+                const allBtn = document.createElement('button');
+                allBtn.className = 'filter-btn active bg-gray-200 text-gray-800 rounded-full px-4 py-1 font-medium';
+                allBtn.textContent = 'All';
+                allBtn.dataset.filter = 'all';
+                allBtn.addEventListener('click', () => handleFilterClick(allBtn));
+                filterContainer.appendChild(allBtn);
+
+                allTags.forEach(tag => {
+                    const btn = document.createElement('button');
+                    btn.className = 'filter-btn bg-gray-200 text-gray-800 rounded-full px-4 py-1 font-medium';
+                    btn.textContent = tag;
+                    btn.dataset.filter = tag;
+                    btn.addEventListener('click', () => handleFilterClick(btn));
+                    filterContainer.appendChild(btn);
+                });
+            }
+
+            function renderProjects() {
+                projectList.innerHTML = '';
+                projectsData.forEach(project => {
+                    const card = document.createElement('div');
+                    card.className = 'project-card bg-white p-6 rounded-lg shadow-md border border-slate-200';
+                    card.dataset.tags = project.tags.join(' | ').toLowerCase();
+                    
+                    let tagsHTML = project.tags.map(tag => 
+                        `<span class="bg-slate-100 text-slate-700 rounded-full px-3 py-1 text-sm font-medium">${tag}</span>`
+                    ).join(' ');
+
+                    card.innerHTML = `
+                        <h4 class="text-xl font-semibold text-blue-700 mb-2">${project.title}</h4>
+                        <p class="text-slate-700 mb-4">${project.description}</p>
+                        <div class="flex flex-wrap gap-2">
+                            ${tagsHTML}
+                        </div>
+                    `;
+                    projectList.appendChild(card);
+                });
+            }
+
+            function handleFilterClick(btn) {
+                const filter = btn.dataset.filter;
+                
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                filterProjects(filter);
+            }
+
+            function filterProjects(filter) {
+                document.querySelectorAll('.project-card').forEach(card => {
+                    if (filter === 'all' || card.dataset.tags.includes(filter.toLowerCase())) {
+                        card.classList.add('visible');
+                    } else {
+                        card.classList.remove('visible');
+                    }
+                });
+            }
+            
+            function filterBySkillTag(skill) {
+                const normalizedSkill = skill.toLowerCase();
+                
+                // Update filter buttons
+                let matched = false;
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    if (btn.dataset.filter.toLowerCase() === normalizedSkill) {
+                        btn.classList.add('active');
+                        matched = true;
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                
+                // If no direct match, activate 'All'
+                if (!matched) {
+                    document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+                }
+                
+                // Filter projects
+                document.querySelectorAll('.project-card').forEach(card => {
+                    if (card.dataset.tags.includes(normalizedSkill)) {
+                        card.classList.add('visible');
+                    } else {
+                        card.classList.remove('visible');
+                    }
+                });
+                
+                // Switch to projects tab
+                switchTab('projects');
+            }
+
+            // --- INITIALIZATION ---
+
+            renderProjects();
+            renderFilters();
+            filterProjects('all');
+            switchTab('profile');
+            initSkillsChart();
+
+            skillTags.forEach(tag => {
+                tag.addEventListener('click', () => {
+                    filterBySkillTag(tag.dataset.skill);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
